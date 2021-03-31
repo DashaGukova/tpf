@@ -25,17 +25,15 @@ END;
 IF OBJECT_ID ('dbo.ufnConcatStrings', 'IF') IS NOT NULL  
  DROP FUNCTION dbo.ufnConcatStrings;
 GO
-CREATE FUNCTION dbo.ufnConcatStrings(@first nvarchar, @last nvarchar)
+CREATE FUNCTION dbo.ufnConcatStrings (@first nvarchar, @last nvarchar)
 RETURNS nvarchar(30)
 AS
 BEGIN
 RETURN
-( SELECT CONCAT_WS ('-', @first, @last)
-  FROM Person.Person AS p
- WHERE p.FirstName = @first AND p.LastName = @last)
+CONCAT_WS ('-', @first, @last)
 END;
 SELECT * 
-FROM dbo.ufnConcatStrings;
+FROM dbo.ufnConcatStrings ('FRESG', 'OIUYT');
 
 --------------------------------------
 
