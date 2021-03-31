@@ -5,9 +5,8 @@ ON HumanResources.Department
 AFTER INSERT, UPDATE 
 AS 
 BEGIN
-   IF @@trancount > 0 ROLLBACK TRANSACTION
-   ;THROW
-   RETURN 55555
+   ROLLBACK TRANSACTION
+   ;THROW 50000,'ERROR', 1;
 END;
 
 -------------------------------------
@@ -17,9 +16,8 @@ ON DATABASE
 FOR ALTER_TABLE
 AS 
 BEGIN
-   IF @@trancount > 0 ROLLBACK TRANSACTION
-   ;THROW
-   RETURN 55555
+   ROLLBACK TRANSACTION
+   ;THROW 50001,'ERROR', 1;
 END;
 
 -------------------------------------
