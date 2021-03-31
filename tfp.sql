@@ -4,11 +4,11 @@ CREATE TRIGGER notifier
 ON HumanResources.Department
 AFTER INSERT, UPDATE 
 AS 
-BEGIN CATCH
+BEGIN
    IF @@trancount > 0 ROLLBACK TRANSACTION
    ;THROW
    RETURN 55555
-END CATCH;
+END;
 
 -------------------------------------
 
@@ -16,24 +16,25 @@ CREATE TRIGGER notifier2
 ON DATABASE
 FOR ALTER_TABLE
 AS 
-BEGIN CATCH
+BEGIN
    IF @@trancount > 0 ROLLBACK TRANSACTION
    ;THROW
    RETURN 55555
-END CATCH;
+END;
 
 -------------------------------------
 
 IF OBJECT_ID ('dbo.ufnConcatStrings', 'IF') IS NOT NULL  
  DROP FUNCTION dbo.ufnConcatStrings;
 GO
-CREATE FUNCTION dbo.ufnConcatStrings(@separator char(3) = ' - ')
-RETURNS nvarchar(30) 
+CREATE FUNCTION dbo.ufnConcatStrings(@first nvarchar, @last nvarchar)
+RETURNS nvarchar(30)
 AS
 BEGIN
 RETURN
-( SELECT CONCAT_WS (@separator, p.FirstName, p.LastName)
-  FROM Person.Person AS p)
+( SELECT CONCAT_WS ('-', @first, @last)
+  FROM Person.Person AS p
+ WHERE p.FirstName = @first AND p.LastName = @last)
 END;
 SELECT * 
 FROM dbo.ufnConcatStrings;
