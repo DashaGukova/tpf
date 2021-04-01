@@ -41,11 +41,10 @@ CREATE FUNCTION HumanResources.ufnEmployeeByDepartment (@storedId int)
 RETURNS TABLE
 AS
 RETURN
-(SELECT e.*
+SELECT e.*
  FROM HumanResources.Employee AS e
  JOIN HumanResources.EmployeeDepartmentHistory AS d ON e.BusinessEntityID = d.BusinessEntityID
- WHERE d.DepartmentID = @storedId
-);
+ WHERE d.DepartmentID = @storedId;
 GO
 SELECT HumanResources.ufnEmployeeByDepartment(1);
 
