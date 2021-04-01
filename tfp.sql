@@ -15,7 +15,7 @@ ON DATABASE
 FOR ALTER_TABLE
 AS 
 BEGIN
-   THROW 50001, 'Using insert, update unacceptable', 1;
+   THROW 50001, 'Using alter unacceptable', 1;
 END;
 
 -------------------------------------
@@ -51,12 +51,12 @@ SELECT HumanResources.ufnEmployeeByDepartment(1);
 ----------------------------------------------
 
 CREATE PROCEDURE Person.uspSearchByName 
-(@Name nvarchar (20)) AS
+@Name nvarchar (20)
+AS
 BEGIN
-    @SetName = '%' + @Name + '%'
 	SELECT p.BusinessEntityId, p.FirstName, p.LastName
 	FROM Person.Person AS p
-	WHERE p.FirstName LIKE @SetName OR p.LastName LIKE @SetName
+	WHERE p.FirstName LIKE '%' + @Name + '%' OR p.LastName LIKE '%' + @Name + '%'
 END;
 GO
-SELECT Person.uspSearchByName('far');
+EXECUTE Person.uspSearchByName @Name = 'far';
